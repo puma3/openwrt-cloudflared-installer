@@ -7,7 +7,8 @@ STOP=01
 name=cloudflared
 pid_file="/var/run/$name.pid"
 cmd="/usr/bin/$name tunnel run"
-cfd_token=""
+cfd_token_file="~/.cloudflared/token"
+
 # cmd="/usr/bin/$name --pidfile $pid_file  --no-autoupdate tunnel run --token ey"
 stdout_log="/var/log/$name.log"
 stderr_log="/var/log/$name.err"
@@ -16,6 +17,10 @@ stderr_log="/var/log/$name.err"
 
 get_pid() {
     cat "$pid_file"
+}
+
+get_token() {
+    cat "$cfd_token_file"
 }
 
 is_running() {
@@ -38,7 +43,7 @@ start_service() {
             procd_open_instance ${name}
             procd_set_param command ${cmd}
             procd_append_param command --no-autoupdate
-            procd_append_param command --token ${cfd_token}
+            procd_append_param command --token ${get_token()}
 
             procd_set_param respawn ${respawn_threshold:-3600} ${respawn_timeout:-5} ${respawn_retry:-5}
 
