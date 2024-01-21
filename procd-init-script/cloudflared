@@ -7,6 +7,7 @@ STOP=01
 name=cloudflared
 pid_file="/var/run/$name.pid"
 cmd="/usr/bin/$name tunnel run"
+cfd_init="/etc/init.d/cloudflared"
 cfd_token_file="~/.cloudflared/token"
 
 # cmd="/usr/bin/$name --pidfile $pid_file  --no-autoupdate tunnel run --token ey"
